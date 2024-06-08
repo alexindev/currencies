@@ -1,4 +1,4 @@
-from app.telegram.bot import start_bot
+from bot import start_bot
 import asyncio
 
 
