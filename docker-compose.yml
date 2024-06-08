@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  mongo:
+    image: mongo:8.0.0-rc6-jammy
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+
+  bot:
+    build: ./telegram/
+    container_name: bot
+    command: sh -c "python3 -m alembic upgrade head && main.py"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+  grabber:
+    build: ./grabber/
+    container_name: grabber
+    depends_on:
+      - mongo
+
+
+volumes:
+  postgres_data:
+  mongodb_data:
