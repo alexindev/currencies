@@ -1,13 +1,29 @@
 version: '3.8'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${BROKER_USER}
+      RABBITMQ_DEFAULT_PASS: ${BROKER_PASS}
+    env_file:
+      - .env
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
   postgres:
     image: postgres:13
     container_name: postgres
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_NAME}
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -21,7 +37,6 @@ services:
     volumes:
       - mongodb_data:/data/db
 
-
   bot:
     build: ./telegram/
     container_name: bot
@@ -34,10 +49,11 @@ services:
   grabber:
     build: ./grabber/
     container_name: grabber
+    command: sh -c "python3 main.py"
     depends_on:
       - mongo
-
 
 volumes:
   postgres_data:
   mongodb_data:
+  rabbitmq-data:
