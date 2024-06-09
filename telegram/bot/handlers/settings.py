@@ -1,10 +1,10 @@
 from aiogram import types, Dispatcher, F
 from aiogram.fsm.context import FSMContext
 
-from app.telegram.loader import db
-from app.telegram.keyboars.inline import settings_kb, back_to_settings_kb
-from app.telegram.services.helper import current_settings_text
-from app.telegram.states.user import Settings
+from loader import db
+from bot.keyboars.inline import settings_kb, back_to_settings_kb
+from bot.services.helper import current_settings_text
+from bot.states.user import Settings
 
 
 async def settings_menu(callback: types.CallbackQuery, state: FSMContext):

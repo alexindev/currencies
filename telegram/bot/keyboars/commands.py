@@ -1,5 +1,5 @@
 from aiogram.types import BotCommand, BotCommandScopeDefault
-from app.telegram.loader import bot
+from loader import bot
 
 
 async def set_commands():

@@ -1,7 +1,7 @@
 from aiogram import types, Dispatcher, F
 
-from app.telegram.loader import bot, db
-from app.telegram.keyboars.inline import main_kb, back_kb
+from loader import bot, db
+from bot.keyboars.inline import main_kb, back_kb
 
 
 async def start_menu(message: types.Message):

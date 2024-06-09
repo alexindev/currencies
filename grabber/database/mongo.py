@@ -67,11 +67,3 @@ class MongoDBManager:
         """
         collection = self.db[collection_name]
         return collection.update_one(query, update)
-
-
-# m = MongoDBManager()
-# for i in m.find_documents(collection_name='binance'):
-#     print(i)
-#
-# print(m.collection.delete_many({}))
-

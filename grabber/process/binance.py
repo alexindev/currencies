@@ -1,16 +1,14 @@
-import asyncio
 import websockets
 import json
 
 from datetime import datetime
 
-from app.telegram.loader import mongo
+from loader import mongo
 
 
 async def on_message(message):
     data = json.loads(message)
     res_data = data.get('data', [])
-
     for i in res_data:
         if isinstance(i, dict):
             ticker = i.get('s')
@@ -37,11 +35,3 @@ async def run_websocket():
             except websockets.exceptions.ConnectionClosed:
                 print("Соединение закрыто. Прерываем цикл")
                 break
-
-
-async def main():
-    await run_websocket()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

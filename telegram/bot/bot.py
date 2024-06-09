@@ -1,7 +1,7 @@
-from app.telegram.loader import dp, bot
-from app.telegram.handlers.settings import settings_handlers
-from app.telegram.handlers.user import user_handlers
-from app.telegram.keyboars.commands import set_commands
+from loader import dp, bot
+from bot.handlers.settings import settings_handlers
+from bot.handlers.user import user_handlers
+from bot.keyboars.commands import set_commands
 
 
 async def start_bot():
