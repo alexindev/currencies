@@ -1,0 +1,66 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${BROKER_USER}
+      RABBITMQ_DEFAULT_PASS: ${BROKER_PASS}
+    env_file:
+      - .env
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  postgres:
+    image: postgres:13-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_NAME}
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  mongo:
+    image: mongo:8.0.0-rc6-jammy
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  bot:
+    build: ./telegram/
+    container_name: bot
+    command: sh -c "python3 main.py"
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+          condition: service_healthy
+
+  grabber:
+    build: ./grabber/
+    container_name: grabber
+    command: sh -c "python3 main.py"
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+          condition: service_healthy
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  rabbitmq-data:
