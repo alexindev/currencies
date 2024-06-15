@@ -3,12 +3,9 @@ from threading import Thread
 
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
-from dotenv import load_dotenv
 
 from database.sqlite import SqliteDatabase
 from broker.consumer import Consumer
-
-load_dotenv()
 
 
 consumer = Consumer()
