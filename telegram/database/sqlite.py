@@ -89,6 +89,7 @@ class SqliteDatabase:
         result = self.cursor.fetchone()
         if result:
             result = {
+                'chat_id': chat_id,
                 'long_percent': result[1],
                 'long_time': result[2],
                 'short_percent': result[3],
