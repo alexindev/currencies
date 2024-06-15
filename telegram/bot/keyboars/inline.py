@@ -5,9 +5,10 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 def main_kb() -> InlineKeyboardMarkup:
     """ Главное меню """
     keyboard = InlineKeyboardBuilder()
-    keyboard.button(text='🏦 Биржи', callback_data='market')
+    keyboard.button(text='🟢 Запустить', callback_data='start')
+    keyboard.button(text='🔴 Остановить', callback_data='stop')
     keyboard.button(text='🛠️ Настройки', callback_data='settings')
-    keyboard.adjust(2)
+    keyboard.adjust(2, 1)
     return keyboard.as_markup()
 
 
@@ -18,9 +19,10 @@ def settings_kb() -> InlineKeyboardMarkup:
     keyboard.button(text='➗ Процент лонг', callback_data='long_percent')
     keyboard.button(text='🔴 Период шорт', callback_data='short_time')
     keyboard.button(text='➗ Процент шорт', callback_data='short_percent')
+    keyboard.button(text='🏦 Биржи', callback_data='market')
     keyboard.button(text='♻️ Текущие настройки', callback_data='current_settings')
     keyboard.button(text='↩', callback_data='back')
-    keyboard.adjust(2, 2, 1, 1)
+    keyboard.adjust(2, 2, 2, 1)
     return keyboard.as_markup()
 
 
