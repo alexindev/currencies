@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher, F
 from aiogram.fsm.context import FSMContext
 
 from loader import db
-from bot.keyboars.inline import settings_kb, back_to_settings_kb
+from bot.keyboars.inline import settings_kb, back_to_settings_kb, back_kb
 from bot.services.helper import current_settings_text
 from bot.states.user import Settings
 
@@ -99,6 +99,12 @@ async def current_setings(callback: types.CallbackQuery):
         await callback.message.edit_text(text='Сначала зарегистрируйтесь: /start', reply_markup=back_to_settings_kb())
 
 
+async def market_menu(callback: types.CallbackQuery):
+    """ Меню биржи """
+    await callback.answer()
+    await callback.message.edit_text("Биржи будут тут", reply_markup=back_kb())
+
+
 def settings_handlers(dp: Dispatcher):
     dp.callback_query.register(settings_menu, F.data == 'settings')
     dp.callback_query.register(current_setings, F.data == 'current_settings')
@@ -110,3 +116,4 @@ def settings_handlers(dp: Dispatcher):
     dp.callback_query.register(long_time, F.data == 'long_time')
     dp.callback_query.register(short_percent, F.data == 'short_percent')
     dp.callback_query.register(short_time, F.data == 'short_time')
+    dp.callback_query.register(market_menu, F.data == 'market')
