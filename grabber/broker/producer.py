@@ -1,12 +1,18 @@
+import os
+
 import pika
 
 from pika.exceptions import AMQPConnectionError, AMQPChannelError
 
 
-def send_message_to_queue(queue_name: str, message):
+def send_message_to_queue(message: str, queue_name: str = 'telegram'):
     """ Отправить сообщение в очередь RabbitMQ """
-    credentials = pika.PlainCredentials('guest', 'guest')
-    parameters = pika.ConnectionParameters(host='localhost', port=5672, credentials=credentials)
+
+    username = os.getenv('BROKER_USER')
+    password = os.getenv('BROKER_PASS')
+
+    credentials = pika.PlainCredentials(username=username, password=password)
+    parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
     try:
         with pika.BlockingConnection(parameters) as connection:
             channel = connection.channel()
