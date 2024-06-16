@@ -1,1 +1,1 @@
-from .mongo import MongoDBManager
+from .mongo import mongo_client
