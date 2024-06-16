@@ -8,11 +8,11 @@ def current_settings_text(data: dict) -> str:
     short_time = data.get('short_time')
 
     if long_percent:
-        text += f'Процент лонг: {long_percent}\n\n'
+        text += f'Процент лонг: {long_percent}%\n\n'
     if short_percent:
-        text += f'Процент шорт: {short_percent}\n\n'
+        text += f'Процент шорт: {short_percent}%\n\n'
     if long_time:
-        text += f'Время лонг: {long_time}\n\n'
+        text += f'Время лонг: {long_time} мин.\n\n'
     if short_time:
-        text += f'Время шорт: {short_time}'
+        text += f'Время шорт: {short_time} мин.'
     return text
