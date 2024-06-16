@@ -1,33 +1,32 @@
+import ujson
 import websockets
-import json
 
 from datetime import datetime
 
-from loader import mongo
+from database import mongo_client
 
 
 async def on_message(message):
-    data = json.loads(message)
+    data = ujson.loads(message)
     res_data = data.get('data', [])
     for i in res_data:
         if isinstance(i, dict):
             ticker = i.get('s')
             price = i.get('c')
-
-            mongo.insert_document(
+            mongo_client.insert_document(
                 collection_name='binance',
                 document={
                     'ticker': ticker,
-                    'price': price,
-                    'timestamp': datetime.utcnow()
+                    'price': float(price),
+                    'timestamp': datetime.now()
                 })
 
 
 async def run_websocket():
     async with websockets.connect("wss://fstream.binance.com/stream") as websocket:
         await websocket.send(
-            json.dumps({"method": "SUBSCRIBE", "params": ['!miniTicker@arr'], "id": 1}))
-        print("Соединение установлено")
+            ujson.dumps({"method": "SUBSCRIBE", "params": ['!miniTicker@arr'], "id": 1}))
+        print("Websocket соединение установлено")
         while True:
             try:
                 message = await websocket.recv()
