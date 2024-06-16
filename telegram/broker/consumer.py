@@ -1,8 +1,10 @@
-import json
 import os
 import time
 
 import pika
+import requests
+import ujson
+
 from pika.exceptions import AMQPConnectionError
 
 
@@ -41,18 +43,41 @@ class Consumer:
                 print(f'Ошибка брокера: {e}')
                 time.sleep(5)
 
-    @staticmethod
-    def callback(ch, method, properties, body):
+    def callback(self, ch, method, properties, body):
         message = None
         try:
-            message = json.loads(body)
+            message = ujson.loads(body)
 
             print(f'получили смс в telegram: {message}')
+            self.send_user_message(message)
 
             # подтверждаем получение сообщения
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
-        except json.JSONDecodeError:
+        except ujson.JSONDecodeError:
             print(f'Не смогли декодировать сообщение: {message}')
         except Exception as e:
             print(e)
+
+    @staticmethod
+    def send_user_message(message: dict):
+        chat_id: int = message.get('chat_id')
+        ticker: str = message.get('ticker')
+        init_price: float = message.get('init_price')
+        last_price: float = message.get('last_price')
+        change: float = message.get('change')
+        event: str = message.get('event')
+        url: str = message.get('url')
+
+        text = (
+            f'Событие: {event}\n'
+            f'Тикер: {ticker.upper()}\n'
+            f'Изменения: {change}\n'
+            f'Начальная цена: {init_price}\n'
+            f'Текущая цена: {last_price}\n'
+            f'URL: <code>{url}</code>'
+        )
+
+        url = f"https://api.telegram.org/bot{os.getenv('TOKEN')}/sendMessage"
+        params = {"chat_id": chat_id, "text": text, "parse_mode": "HTML"}
+        requests.post(url, json=params)
