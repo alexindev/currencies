@@ -72,12 +72,12 @@ class Consumer:
         text = (
             f'Событие: {event}\n'
             f'Тикер: {ticker.upper()}\n'
-            f'Изменения: {change}\n'
+            f'Изменения: {change}%\n'
             f'Начальная цена: {init_price}\n'
             f'Текущая цена: {last_price}\n'
-            f'URL: <code>{url}</code>'
+            f'URL: {url}'
         )
 
         url = f"https://api.telegram.org/bot{os.getenv('TOKEN')}/sendMessage"
-        params = {"chat_id": chat_id, "text": text, "parse_mode": "HTML"}
+        params = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
         requests.post(url, json=params)
