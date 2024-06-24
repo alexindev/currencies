@@ -4,12 +4,11 @@ from threading import Thread
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from database.sqlite import SqliteDatabase
+from database import Database
 from broker.consumer import Consumer
 
-
 consumer = Consumer()
-db = SqliteDatabase()
+db = Database()
 storage = MemoryStorage()
 bot = Bot(token=os.getenv('TOKEN'))
 dp = Dispatcher(storage=storage)

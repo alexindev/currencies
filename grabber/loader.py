@@ -1,10 +1,10 @@
 from threading import Thread
 
 from broker import Consumer
-from database import MongoDBManager
+from process.monitor import Monitor
 
-
-mongo = MongoDBManager()
 consumer = Consumer()
+monitor = Monitor()
 
 Thread(target=consumer.start_consumer).start()
+Thread(target=monitor.monitor).start()

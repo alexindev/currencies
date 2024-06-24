@@ -23,6 +23,8 @@ async def start_bot(callback: types.CallbackQuery):
     """ Запустить мониторинг """
     await callback.answer()
     user_data = db.get_user(chat_id=callback.from_user.id)
+    if not user_data:
+        await callback.message.edit_text(text='Нет данных', reply_markup=back_kb())
     long_percent = user_data.get('long_percent')
     long_time = user_data.get('long_time')
     short_percent = user_data.get('short_percent')

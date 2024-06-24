@@ -1,5 +1,7 @@
 import asyncio
 
+import loader
+
 from process import run_websocket
 
 
