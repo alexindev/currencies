@@ -50,7 +50,7 @@ class Consumer:
         try:
             message = ujson.loads(body)
 
-            print(f'получили смс в grabber: {message}')
+            print(f'получили сообщение в grabber: {message}')
             func = message.get('func')
 
             match func:
