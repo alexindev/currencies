@@ -7,4 +7,4 @@ consumer = Consumer()
 monitor = Monitor()
 
 Thread(target=consumer.start_consumer).start()
-Thread(target=monitor.monitor).start()
+Thread(target=monitor.run).start()

@@ -48,7 +48,7 @@ class Consumer:
         try:
             message = ujson.loads(body)
 
-            print(f'получили смс в telegram: {message}')
+            print(f'получили сообщение в telegram: {message}')
             self.send_user_message(message)
 
             # подтверждаем получение сообщения

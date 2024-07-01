@@ -7,7 +7,7 @@ async def set_commands():
     commands = [
         BotCommand(
             command='start',
-            description='Регистрация'
+            description='На главную'
         ),
     ]
     await bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
