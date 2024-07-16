@@ -49,11 +49,10 @@ class Monitor:
         query_final = {'timestamp': {'$gte': end_time_end, '$lte': end_time}}
         final_data = mongo_client.find_documents(collection_name='binance', query=query_final)
 
-        # Сгруппируйте данные по валютам
         initial_data_by_ticker = defaultdict(list)
         final_data_by_ticker = defaultdict(list)
 
-        # Сгруппируйте данные по валютам
+        # Группировка данных по валютам
         for document in initial_data:
             ticker = document.get('ticker')
             if ticker:
